@@ -25,9 +25,10 @@ import model.Utilisateur;
  */
 public class Fen_Principale extends JFrame {
 
-    private  int MIN = 1;
-    private  int MAX = 10;
-    
+    private int MIN = 1;
+    private int MAX = 10;
+    private int nombreFauts = 0;
+
     //attributs
     private JPanel jpPanel;
     private JPanel jpNord;
@@ -179,14 +180,8 @@ public class Fen_Principale extends JFrame {
                     break;
                 }
                 case "OK": {
-                    if (btnResultat.getText().isEmpty()) {
 
-                    } else if (verifierResultat(btnResultat, btnA, btnB, btnSign)) {
-                        btnInfo.setText("BRAVO");
-                        genererOpperation();
-                    } else {
-                        btnInfo.setText("INCORRECT");
-                    }
+                    verifierResultat();
 
                     break;
                 }
@@ -199,6 +194,22 @@ public class Fen_Principale extends JFrame {
     }//private class ButtonClickListener
 
     //methodes
+    public void verifierResultat() {
+        
+        if (btnResultat.getText().isEmpty()) {
+            
+        } else if (verifierResultat(btnResultat, btnA, btnB, btnSign)) {
+            btnInfo.setText("BRAVO");
+            genererOpperation();
+        } else {
+            btnInfo.setText("INCORRECT");
+            btnResultat.setText("");
+            nombreFauts++;
+            lblFautes.setText("Fauts: " + nombreFauts);
+            lblFautes.setForeground(Color.red);
+        }
+    }
+
     public void genererOpperation() {
         //generer les opperations
         btnA.setText("" + genererNombre(MIN, MAX));
@@ -217,7 +228,7 @@ public class Fen_Principale extends JFrame {
         int b = Integer.valueOf(btnB.getText());
         String sign = btnSign.getText();
         boolean resultat = true;
-        
+
         switch (sign) {
             case "+": {
                 resultat = r == a + b;
